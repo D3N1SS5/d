@@ -21,6 +21,7 @@
       }
       canvas {
         display: block;
+        image-rendering: pixelated;
       }
       #cursor-dot {
         position: fixed;
@@ -41,20 +42,25 @@
     <div id="cursor-dot"></div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <script>
-      const text = `Thirty days in this place. Or at least that’s what Ray reminds me whenever I lose count. Don’t even know how the guy does it, Honestly, I’ve stopped believing in numbers after the first week. Time doesn’t feel like it works naturally here. The air’s always stale, the light’s always the same- bluey, green, and my guitar’s been nothing but a bummer to me ever since I woke up with it strapped to my back. Heck, you can’t even tell if it’s night or day except when you decide to snooze when you get tired.`;
-      const text2 = `I remember the last thing I played before everything went wrong. A familiar chord progression, followed by a melody that my Dad used to hum to me and my Sister. Mom was yelling again, and Dad wasn’t answering his phone, probably because of the arguing and him not being so tech-savvy. So I just... walked out. I walked out to replenish my thoughts, and take a breather. I hope that when I come back home I can have a better nap.`;
-      const text3 = `But after the walk, there was nothing.. I only vividly remember walking on the concrete that the road was built with, And then? I just woke up here. My guitar smelled like old wood and trash. Except now the strings don’t wanna make a sound. Except when I play a specific melody, for some odd reason.`;
-      const text4 = `When I first fell down, Ray found me like that, grabbing the thing like it could save me. They didn’t ask questions. Good, because I don’t have answers. Just this nostalgic feeling of where my memories should be. This current state I'm in, it’s not one I’d personally wish for, but I am happy I’m not alone in this.`;
-      const text5 = `We keep moving. Always moving. The fog appears if you stay up too long, we’ve learned that the hard way when our third hiding spot just... wasn’t there one day. Now we sleep in shifts, I spend the night watching Ray’s back, and so forth. Tomorrow we’re risking travelling deeper into the Waterways. Ray says there might be tools. I personally say there’s definitely something worse waiting down here.`;
-      const text6 = `Sometimes I catch myself humming old songs. The ones Dad taught me when I was small, before everything got complicated. They are the only things that can help me not forget who I’ve once used to be.`;
-      const text7 = `I wonder if they’ve even noticed I’m gone.`;
+      const text = `It found us today.`;
+      const text2 = `I don’t know who or what that was, but we were camped out near one of these broken pumps, sharing a can of something that might've been beans once. The air was quiet, too quiet. Then the temperature dropped so fast I saw my breath fog up. Ray's head snapped up before I even heard the footsteps.`;
+      const text3 = `Slow. Heavy. Like someone walking in boots full of water.`;
+      const text4 = `When I turned around, it was standing at the end of the tunnel. Taller than anything i’ve seen in here so far.. Those robes swaying without any wind. And its face... God, its face was just this massive deer skull, cracked. It had no visible eyes, but I knew, I just knew IT was looking right at me.`;
+      const text5 = `Ray's fingers dug into my arm. Afraid of making any sudden move.`;
+      const text6 = `The thing tilted its head. Bone grinding against bone. A sound that's stuck in my teeth now.`;
+      const text7 = `Our lantern sputtered.`;
+      const text8 = `.`;
+      const text9 = `..`;
+      const text10 = `Darkness.`;
+      const text11 = `When the light came back, it was halfway down the tunnel. Closer. One hand (were those fingers or claws?) reac`;
 
       const textCanvas = document.createElement("canvas");
       const ctx = textCanvas.getContext("2d");
 
-      const canvasWidth = 1400; // smaller width for bigger margin left/right
+      const canvasWidth = 1550;
+
       const lineHeight = 30;
-      const padding = 80; // bigger padding for left/right margin
+      const padding = 100;
 
       function wrapText(context, text, x, y, maxWidth, lineHeight) {
         const words = text.split(" ");
@@ -73,13 +79,12 @@
         context.fillText(line, x, y);
         return y;
       }
-
       async function loadFontAndDrawText() {
         const font = new FontFace("ralsei", "url(ralsei.otf)");
         await font.load();
         document.fonts.add(font);
 
-        textCanvas.width = canvasWidth;
+        textCanvas.width = 1500;
         textCanvas.height = 1600;
 
         ctx.clearRect(0, 0, textCanvas.width, textCanvas.height);
@@ -88,13 +93,25 @@
         ctx.textAlign = "left";
 
         ctx.font = "bold 32px ralsei";
-        ctx.fillText("Journal Entry. Day 30", padding, padding);
+        ctx.fillText("Journal Entry. Day 67", padding, padding);
 
         ctx.font = "24px ralsei";
         let y = padding + 50;
 
-        const paragraphs = [text, text2, text3, text4, text5, text6, text7];
-        for (let i = 0; i < paragraphs.length; i++) {
+        const paragraphs = [
+          text,
+          text2,
+          text3,
+          text4,
+          text5,
+          text6,
+          text7,
+          text8,
+          text9,
+          text10,
+          text11,
+        ];
+        for (let i = 0; i < paragraphs.length - 1; i++) {
           y = wrapText(
             ctx,
             paragraphs[i],
@@ -105,6 +122,9 @@
           );
           y += lineHeight * 2;
         }
+
+        ctx.fillText(paragraphs[paragraphs.length - 1], padding, y);
+        y += lineHeight * 2;
 
         const usedHeight = y + padding;
         const croppedCanvas = document.createElement("canvas");
