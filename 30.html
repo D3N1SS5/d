@@ -32,6 +32,15 @@
         transform: translate(-50%, -50%);
         z-index: 9999;
       }
+      #arrow {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-family: "ralsei", sans-serif;
+        font-size: 48px;
+        color: rgba(255, 253, 247, 0.463);
+      }
     </style>
   </head>
   <body>
@@ -40,6 +49,7 @@
     <script src="app.js"></script>
     <div id="cursor-dot"></div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <div id="arrow"><-</div>
     <script>
       const text = `Thirty days in this place. Or at least that’s what Ray reminds me whenever I lose count. Don’t even know how the guy does it, Honestly, I’ve stopped believing in numbers after the first week. Time doesn’t feel like it works naturally here. The air’s always stale, the light’s always the same- bluey, green, and my guitar’s been nothing but a bummer to me ever since I woke up with it strapped to my back. Heck, you can’t even tell if it’s night or day except when you decide to snooze when you get tired.`;
       const text2 = `I remember the last thing I played before everything went wrong. A familiar chord progression, followed by a melody that my Dad used to hum to me and my Sister. Mom was yelling again, and Dad wasn’t answering his phone, probably because of the arguing and him not being so tech-savvy. So I just... walked out. I walked out to replenish my thoughts, and take a breather. I hope that when I come back home I can have a better nap.`;
@@ -127,6 +137,10 @@
       }
 
       async function init() {
+        const arrow = document.getElementById("arrow");
+        arrow.addEventListener("click", () => {
+          window.location.href = "https://d3n1ss5.github.io/d/";
+        });
         const audio = new Audio("Depths.ogg");
         audio.loop = true;
         audio.volume = 0.5;

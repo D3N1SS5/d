@@ -32,6 +32,15 @@
         transform: translate(-50%, -50%);
         z-index: 9999;
       }
+      #arrow {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-family: "ralsei", sans-serif;
+        font-size: 48px;
+        color: rgba(255, 253, 247, 0.463);
+      }
     </style>
   </head>
   <body>
@@ -40,6 +49,7 @@
     <script src="app.js"></script>
     <div id="cursor-dot"></div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <div id="arrow"><-</div>
     <script>
       const text = `I never thought I'd miss sunlight this much. Or fresh air. Or not having to check every shadow for things that shouldn't exist.`;
       const text2 = `The deeper we go, the worse it gets. These tunnels aren't just sewers- they're something else. Something hungry. The creatures down here... I call them Hexes. Sounds better than "whatever the hell those things are." They look like someone took a bunch of animals and forgot to put them together right. Too many suffer deformations. The way they move... God, the way they move isn't right. They don’t move like the original counterparts they are based on.`;
@@ -170,6 +180,10 @@
       }
 
       async function init() {
+        const arrow = document.getElementById("arrow");
+        arrow.addEventListener("click", () => {
+          window.location.href = "https://d3n1ss5.github.io/d/";
+        });
         const audio = new Audio("Depths.ogg");
         audio.loop = true;
         audio.volume = 0.5;
