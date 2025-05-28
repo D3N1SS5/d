@@ -139,7 +139,7 @@
       async function init() {
         const arrow = document.getElementById("arrow");
         arrow.addEventListener("click", () => {
-          window.location.href = "https://d3n1ss5.github.io/d/";
+          window.location.href = "index2.html";
         });
         const audio = new Audio("Depths.ogg");
         audio.loop = true;
@@ -175,7 +175,6 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Hide default cursor and add custom dot cursor div
         document.body.style.cursor = "none";
         const dotCursor = document.createElement("div");
         Object.assign(dotCursor.style, {
@@ -202,9 +201,9 @@
           u_texture: { value: texture },
           u_intensity: { value: 2.0 },
           u_flashlightPos: { value: new THREE.Vector2(0.5, 0.5) },
-          u_flashlightRadius: { value: 0.3 }, // relative size (0-1)
-          u_flashlightFeather: { value: 0.3 }, // softness of edge
-          u_flashlightColor: { value: new THREE.Vector3(1.0, 0.95, 0.8) }, // pale yellowish
+          u_flashlightRadius: { value: 0.3 },
+          u_flashlightFeather: { value: 0.3 },
+          u_flashlightColor: { value: new THREE.Vector3(1.0, 0.95, 0.8) },
           u_aspectRatio: { value: window.innerWidth / window.innerHeight },
         };
 
@@ -293,17 +292,12 @@
           dotCursor.style.left = e.clientX + "px";
           dotCursor.style.top = e.clientY + "px";
 
-          // Convert mouse screen coordinates to mesh local coordinates:
-          // mesh.position is center of the plane in screen coords (pixels),
-          // so localX/Y = mousePos - meshPos + half width/height to get local plane coords
-
           const localX = e.clientX - (mesh.position.x - finalCanvas.width / 2);
           const localY =
             window.innerHeight -
             e.clientY -
             (mesh.position.y - finalCanvas.height / 2);
 
-          // Convert local coords to UV (0 to 1):
           const uvx = localX / finalCanvas.width;
           const uvy = localY / finalCanvas.height;
 

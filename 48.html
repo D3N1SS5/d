@@ -127,11 +127,9 @@
           y += lineHeight * 2;
         }
 
-        // Save the position where text9 should be drawn
         const text9Y = y;
         const text9X = padding;
 
-        // Draw text9 normally on the main canvas (will be covered by shaking version)
         wrapText(
           ctx,
           text9,
@@ -158,7 +156,6 @@
           usedHeight
         );
 
-        // Create a separate canvas for the shaking text
         const shakingTextCanvas = document.createElement("canvas");
         shakingTextCanvas.width = canvasWidth - padding * 2;
         shakingTextCanvas.height = lineHeight * 2;
@@ -173,7 +170,7 @@
           croppedCanvas,
           text9Pos: {
             x: text9X,
-            y: text9Y / usedHeight, // Return as normalized (0-1) value
+            y: text9Y / usedHeight,
           },
           shakingTextCanvas,
         };
@@ -182,7 +179,7 @@
       async function init() {
         const arrow = document.getElementById("arrow");
         arrow.addEventListener("click", () => {
-          window.location.href = "https://d3n1ss5.github.io/d/";
+          window.location.href = "index2.html";
         });
         const audio = new Audio("Depths.ogg");
         audio.loop = true;
@@ -239,13 +236,11 @@
         });
         document.body.appendChild(dotCursor);
 
-        // Create main texture
         const mainTexture = new THREE.CanvasTexture(finalCanvas);
         mainTexture.minFilter = THREE.LinearFilter;
         mainTexture.magFilter = THREE.LinearFilter;
         mainTexture.needsUpdate = true;
 
-        // Create texture for shaking text
         const shakingTexture = new THREE.CanvasTexture(shakingTextCanvas);
         shakingTexture.minFilter = THREE.LinearFilter;
         shakingTexture.magFilter = THREE.LinearFilter;
@@ -398,7 +393,6 @@
         function animate(time) {
           uniforms.u_time.value = time * 0.001;
 
-          // Update shaking offset with random values between -3 and 3 pixels
           const shakeX = (Math.random() * 6 - 3) / finalCanvas.width;
           const shakeY = (Math.random() * 6 - 3) / finalCanvas.height;
           uniforms.u_shakeOffset.value.set(shakeX, shakeY);
