@@ -1,4 +1,4 @@
-var dooropened = false;
+let dooropened = false;
 
 if (!localStorage.getItem("doorsOpened")) {
   localStorage.setItem(
@@ -18,77 +18,53 @@ const input = document.querySelector(".dinput");
 let spinDuration = 5;
 let eggmanSize = 100;
 
-door.addEventListener("mouseover", () => {
-  if (!dooropened) door.src = "dd2.png";
-});
-door.addEventListener("mouseout", () => {
-  if (!dooropened) door.src = "dd1.png";
-});
-door.addEventListener("click", () => {
-  if (!dooropened) {
-    door.classList.add("doorshake");
-    door.src = "dd3.png";
-    const audio = new Audio("door.wav");
-    audio.volume = 0.5;
-    audio.play();
-    dooropened = true;
-    setTimeout(() => {
-      window.location.href = "30.html";
-    }, 2000);
-  }
-});
+function setupDoor(img, hoverSrc, idleSrc, openSrc, url) {
+  img.addEventListener("mouseover", () => {
+    if (!dooropened) img.src = hoverSrc;
+  });
+  img.addEventListener("mouseout", () => {
+    if (!dooropened) img.src = idleSrc;
+  });
+  img.addEventListener("click", () => {
+    if (!dooropened) {
+      img.classList.add("doorshake");
+      img.src = openSrc;
+      const audio = new Audio("door.wav");
+      audio.volume = 0.5;
+      audio.play();
+      dooropened = true;
+      setTimeout(() => {
+        window.location.href = url;
+      }, 2000);
+    }
+  });
+  const keySound = new Audio("snd_text_ch1.wav");
+  keySound.volume = 0.4;
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const sound = keySound.cloneNode();
+      sound.play();
+    }
+  });
+}
+
+setupDoor(door, "dd2.png", "dd1.png", "dd3.png", "30.html");
 
 function updateUnlockedDoors() {
   const state = JSON.parse(localStorage.getItem("doorsOpened"));
 
   if (state.door2) {
     door2.classList.remove("hide");
-    door2.src = "ee1.png";
-    door2.addEventListener("mouseover", () => {
-      if (!dooropened) door2.src = "ee2.png";
-    });
-    door2.addEventListener("mouseout", () => {
-      if (!dooropened) door2.src = "ee1.png";
-    });
-    door2.addEventListener("click", () => {
-      if (!dooropened) {
-        door2.classList.add("doorshake");
-        door2.src = "ee3.png";
-        const audio = new Audio("door.wav");
-        audio.volume = 0.5;
-        audio.play();
-        dooropened = true;
-        setTimeout(() => {
-          window.location.href = "67.html";
-        }, 2000);
-      }
-    });
+    setupDoor(door2, "ee2.png", "ee1.png", "ee3.png", "67.html");
   }
 
   if (state.door3) {
     door3.classList.remove("hide");
-    door3.src = "ee1.png";
-    door3.addEventListener("mouseover", () => {
-      if (!dooropened) door3.src = "ee2.png";
-    });
-    door3.addEventListener("mouseout", () => {
-      if (!dooropened) door3.src = "ee1.png";
-    });
-    door3.addEventListener("click", () => {
-      if (!dooropened) {
-        door3.classList.add("doorshake");
-        door3.src = "ee3.png";
-        const audio = new Audio("door.wav");
-        audio.volume = 0.5;
-        audio.play();
-        dooropened = true;
-        setTimeout(() => {
-          window.location.href = "48.html";
-        }, 2000);
-      }
-    });
+    setupDoor(door3, "ee2.png", "ee1.png", "ee3.png", "48.html");
   }
 }
+
 const glass = new Audio("snd_glass_crunch.wav");
 glass.volume = 0.2;
 
@@ -101,58 +77,41 @@ eggman.addEventListener("click", () => {
   const currentCount = parseInt(eggs.textContent, 10);
   eggs.textContent = currentCount + 1;
   spinDuration /= 1.1;
-  document.styleSheets[0].insertRule(
-    `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`,
-    document.styleSheets[0].cssRules.length
-  );
-  eggman.querySelector(
-    "img"
-  ).style.animation = `spin ${spinDuration}s linear infinite`;
+  const img = eggman.querySelector("img");
+  img.style.animation = `spin ${spinDuration}s linear infinite`;
+
   eggmanSize += 0.5;
-  if (currentCount % 50 === 0) {
+  if ((currentCount + 1) % 50 === 0) {
     levelup.currentTime = 0;
     levelup.play();
-    eggman.querySelector("img").style.width = `${eggmanSize}%`;
-    eggman.querySelector("img").style.height = `${eggmanSize}%`;
+    img.style.width = `${eggmanSize}%`;
+    img.style.height = `${eggmanSize}%`;
   }
 });
 
 button.addEventListener("click", () => {
   const state = JSON.parse(localStorage.getItem("doorsOpened"));
-  input.value = input.value.trim();
-  const val = input.value.toLowerCase();
+  const val = input.value.trim().toLowerCase();
 
   if (val === "hunter" && !state.door2) {
     state.door2 = true;
     localStorage.setItem("doorsOpened", JSON.stringify(state));
-    const unlockAudio = new Audio("snd_ominous.wav");
-    unlockAudio.volume = 0.2;
-    unlockAudio.play();
+    new Audio("snd_ominous.wav").play();
     updateUnlockedDoors();
   } else if (val === "danger" && !state.door3) {
     state.door3 = true;
     localStorage.setItem("doorsOpened", JSON.stringify(state));
-    const unlockAudio = new Audio("snd_ominous.wav");
-    unlockAudio.volume = 0.2;
-    unlockAudio.play();
+    new Audio("snd_ominous.wav").play();
     updateUnlockedDoors();
   } else if (val === "egg") {
     eggman.classList.remove("hide");
-    const eggAudio = new Audio("snd_creepyjingle.wav");
-    eggAudio.volume = 0.5;
-    eggAudio.play();
+    new Audio("snd_egg_ch1.wav").play();
   } else if (val === "gurt") {
     localStorage.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  } else if (val === "") {
-    localStorage.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  } else {
-    input.value = "";
+    new Audio("snd_hypnosis_ch1.wav").play();
+    setTimeout(() => window.location.reload(), 1500);
+  } else if (val === "gaster") {
+    document.body.innerHTML = "";
   }
 
   input.value = "";

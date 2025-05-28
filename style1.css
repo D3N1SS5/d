@@ -1,0 +1,45 @@
+@font-face {
+  font-family: "undertale";
+  src: url("PixelOperator-Bold.ttf") format("truetype");
+}
+
+body {
+  background: black;
+  color: white;
+  font-family: "undertale", monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  margin: 0;
+}
+
+#text-box {
+  font-size: 32px;
+  white-space: pre-wrap;
+  text-align: center;
+  max-width: 800px;
+  padding: 20px;
+}
+
+#input-box {
+  margin-top: 30px;
+}
+input:focus {
+  outline: none;
+}
+#answer {
+  font-family: "undertale", monospace;
+  font-size: 32px;
+  background: black;
+  border: 2px solid white;
+  color: white;
+  padding: 10px;
+  width: 200px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}

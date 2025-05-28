@@ -5,6 +5,20 @@ html {
 html::-webkit-scrollbar {
   display: none;
 }
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
+.bg {
+  background-image: url("bro2.png");
+  width: 100%;
+  height: 450vh;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .door {
   width: 100%;
   height: 100vh;
@@ -19,11 +33,6 @@ html::-webkit-scrollbar {
 }
 .doors img:hover {
   cursor: pointer;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: black;
 }
 @keyframes shake {
   0% {
@@ -51,21 +60,6 @@ body {
     transform: translate(1px, 0px);
   }
 }
-.bg {
-  background-image: url("bro2.png");
-  width: 100%;
-  height: 450vh;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.eggman img {
-  animation: spin 5s linear infinite;
-}
-.eggs {
-  font-family: undertale;
-}
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -73,6 +67,15 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+.eggman img {
+  animation: spin 5s linear infinite;
+}
+.eggs {
+  font-family: undertale;
+  color: white;
+  font-size: 24px;
+  text-align: center;
 }
 @font-face {
   font-family: undertale;
@@ -113,9 +116,10 @@ input:focus {
   background-color: white;
   color: black;
 }
-.show {
-  opacity: 1;
-}
 .hide {
   opacity: 0;
+  pointer-events: none;
+}
+.show {
+  opacity: 1;
 }
