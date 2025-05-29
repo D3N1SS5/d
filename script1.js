@@ -1,29 +1,3 @@
-if (
-  /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  )
-) {
-  document.body.style.margin = "0";
-  document.body.style.background = "black";
-  document.body.innerHTML = `
-    <div style="
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: black;
-      color: white;
-      font-family: 'Determination Mono', monospace;
-      font-size: 48px;
-      text-align: center;
-      padding: 20px;
-      text-shadow: 0 0 2px #969696, 2px 0 2px #969696, -2px 0 2px #969696, 0 2px 2px #969696, 0 -2px 2px #969696;
-    ">
-      CONNECTION IS RUPTURING,<br>TRY AGAIN NEXT TIME<br>THROUGH ANOTHER MEDIUM.
-    </div>`;
-  throw new Error("Mobile device detected. Stopping script.");
-}
-
 const textBox = document.getElementById("text-box");
 const inputBox = document.getElementById("input-box");
 const answerInput = document.getElementById("answer");
@@ -66,7 +40,7 @@ let state = {
 };
 
 function init() {
-  state.audio = new Audio("../sound/CONNECTED.ogg");
+  state.audio = new Audio("CONNECTED.ogg");
   state.audio.loop = true;
   state.audio.play();
 
@@ -101,7 +75,7 @@ function finishTyping() {
   } else if (state.showingFinalMessage) {
     setTimeout(() => {
       fadeOutTextBox(() => {
-        window.location.href = "../index2.html";
+        window.location.href = "index2.html";
       });
     }, 1000);
   }
@@ -191,13 +165,13 @@ function handleAnswer() {
   } else {
     textBox.textContent = "LOUD INCORRECT BUZZER.";
     answerInput.value = "";
-    const errorSound = new Audio("../sound/snd_text_buzzer.wav");
+    const errorSound = new Audio("snd_text_buzzer.wav");
     errorSound.play();
   }
 }
 
 function playTypeSound() {
-  const typeSound = new Audio("../sound/snd_text_ch1.wav");
+  const typeSound = new Audio("snd_text_ch1.wav");
   typeSound.volume = 0.4;
   typeSound.play();
 }
