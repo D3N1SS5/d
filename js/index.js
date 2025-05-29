@@ -29,7 +29,7 @@ function setupDoor(img, hoverSrc, idleSrc, openSrc, url) {
     if (!dooropened) {
       img.classList.add("doorshake");
       img.src = openSrc;
-      const audio = new Audio("door.wav");
+      const audio = new Audio("../sound/door.wav");
       audio.volume = 0.5;
       audio.play();
       dooropened = true;
@@ -38,7 +38,7 @@ function setupDoor(img, hoverSrc, idleSrc, openSrc, url) {
       }, 2000);
     }
   });
-  const keySound = new Audio("snd_text_ch1.wav");
+  const keySound = new Audio("../sound/snd_text_ch1.wav");
   keySound.volume = 0.4;
 
   input.addEventListener("keydown", (e) => {
@@ -49,26 +49,44 @@ function setupDoor(img, hoverSrc, idleSrc, openSrc, url) {
   });
 }
 
-setupDoor(door, "dd2.png", "dd1.png", "dd3.png", "30.html");
+setupDoor(
+  door,
+  "../sprites/dd2.png",
+  "../sprites/dd1.png",
+  "../sprites/dd3.png",
+  "../30.html"
+);
 
 function updateUnlockedDoors() {
   const state = JSON.parse(localStorage.getItem("doorsOpened"));
 
   if (state.door2) {
     door2.classList.remove("hide");
-    setupDoor(door2, "ee2.png", "ee1.png", "ee3.png", "67.html");
+    setupDoor(
+      door2,
+      "../sprites/ee2.png",
+      "../sprites/ee1.png",
+      "../sprites/ee3.png",
+      "../67.html"
+    );
   }
 
   if (state.door3) {
     door3.classList.remove("hide");
-    setupDoor(door3, "ee2.png", "ee1.png", "ee3.png", "48.html");
+    setupDoor(
+      door3,
+      "../sprites/ee2.png",
+      "../sprites/ee1.png",
+      "../sprites/ee3.png",
+      "../48.html"
+    );
   }
 }
 
-const glass = new Audio("snd_glass_crunch.wav");
+const glass = new Audio("../sound/snd_glass_crunch.wav");
 glass.volume = 0.2;
 
-const levelup = new Audio("snd_levelup.wav");
+const levelup = new Audio("../sound/snd_levelup.wav");
 levelup.volume = 0.5;
 
 eggman.addEventListener("click", () => {
@@ -96,19 +114,19 @@ button.addEventListener("click", () => {
   if (val === "hunter" && !state.door2) {
     state.door2 = true;
     localStorage.setItem("doorsOpened", JSON.stringify(state));
-    new Audio("snd_ominous.wav").play();
+    new Audio("../sound/snd_ominous.wav").play();
     updateUnlockedDoors();
   } else if (val === "danger" && !state.door3) {
     state.door3 = true;
     localStorage.setItem("doorsOpened", JSON.stringify(state));
-    new Audio("snd_ominous.wav").play();
+    new Audio("../sound/snd_ominous.wav").play();
     updateUnlockedDoors();
   } else if (val === "egg") {
     eggman.classList.remove("hide");
-    new Audio("snd_egg_ch1.wav").play();
+    new Audio("../sound/snd_egg_ch1.wav").play();
   } else if (val === "gurt") {
     localStorage.clear();
-    new Audio("snd_hypnosis_ch1.wav").play();
+    new Audio("../sound/snd_hypnosis_ch1.wav").play();
     setTimeout(() => window.location.reload(), 1500);
   } else if (val === "gaster") {
     document.body.innerHTML = "";

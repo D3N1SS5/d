@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>ENTRY.</title>
-    <link rel="icon" href="icon.png" type="image/x-icon" />
+    <link rel="icon" href="sprites/icon.png" type="image/x-icon" />
     <style>
       #particles-js {
         position: absolute;
@@ -46,7 +46,7 @@
   <body>
     <div id="particles-js"></div>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="app.js"></script>
+    <script src="/js/app.js"></script>
     <div id="cursor-dot"></div>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <div id="arrow"><-</div>
@@ -87,7 +87,7 @@
       }
 
       async function loadFontAndDrawText() {
-        const font = new FontFace("ralsei", "url(ralsei.otf)");
+        const font = new FontFace("ralsei", "url(fonts/ralsei.otf)");
         await font.load();
         document.fonts.add(font);
 
@@ -181,7 +181,7 @@
         arrow.addEventListener("click", () => {
           window.location.href = "index2.html";
         });
-        const audio = new Audio("Depths.ogg");
+        const audio = new Audio("sound/Depths.ogg");
         audio.loop = true;
         audio.volume = 0.5;
         audio.play().catch(() => {
@@ -219,7 +219,6 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Hide default cursor and add custom dot cursor div
         document.body.style.cursor = "none";
         const dotCursor = document.createElement("div");
         Object.assign(dotCursor.style, {
@@ -297,15 +296,12 @@
             varying vec2 vUv;
       
             void main() {
-              // First draw the main texture
               vec4 color = texture2D(u_texture, vUv);
               
-              // Calculate if we're in the shaking text area
               vec2 shakingUV = (vUv - vec2(u_shakingTextPos.x, u_shakingTextPos.y)) / u_shakingTextSize;
               
               if (shakingUV.x >= 0.0 && shakingUV.x <= 1.0 && 
                   shakingUV.y >= 0.0 && shakingUV.y <= 1.0) {
-                // Apply shake offset
                 shakingUV += u_shakeOffset;
                 
                 if (shakingUV.x >= 0.0 && shakingUV.x <= 1.0 && 
@@ -317,7 +313,6 @@
               
               if (color.a < 0.1) discard;
       
-              // Apply flashlight effect
               vec2 pos = vUv - u_flashlightPos;
               pos.x *= 1.0 / u_aspectRatio;
               float dist = length(pos);

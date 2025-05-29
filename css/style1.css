@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Determination Mono";
-  src: url("DTM-Mono.otf") format("opentype");
+  src: url("../fonts/DTM-Mono.otf") format("opentype");
   font-weight: normal;
 }
 
 body {
-  background-image: url("gaster.gif");
+  background-image: url("../sprites/gaster.gif");
   background-size: cover;
   background-position: center;
   color: white;
@@ -37,7 +37,6 @@ body {
     0 2px 2px #969696, 0 -2px 2px #969696;
   line-height: 1.75;
   opacity: 1;
-  /* transition: opacity 1.5s ease; */
 }
 .scarynothingdivtospacethetextbox {
   width: 100%;

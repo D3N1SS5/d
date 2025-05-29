@@ -11,7 +11,7 @@ body {
   background-color: black;
 }
 .bg {
-  background-image: url("bro2.png");
+  background-image: url("../sprites/bro2.png");
   width: 100%;
   height: 450vh;
   background-size: cover;
@@ -79,7 +79,7 @@ body {
 }
 @font-face {
   font-family: undertale;
-  src: url(PixelOperator-Bold.ttf) format("truetype");
+  src: url(../fonts/PixelOperator-Bold.ttf) format("truetype");
 }
 .dinput {
   border: 4px solid white;
