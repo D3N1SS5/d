@@ -219,7 +219,6 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Hide default cursor and add custom dot cursor div
         document.body.style.cursor = "none";
         const dotCursor = document.createElement("div");
         Object.assign(dotCursor.style, {
@@ -297,10 +296,8 @@
             varying vec2 vUv;
       
             void main() {
-              // First draw the main texture
               vec4 color = texture2D(u_texture, vUv);
               
-              // Calculate if we're in the shaking text area
               vec2 shakingUV = (vUv - vec2(u_shakingTextPos.x, u_shakingTextPos.y)) / u_shakingTextSize;
               
               if (shakingUV.x >= 0.0 && shakingUV.x <= 1.0 && 
@@ -317,7 +314,6 @@
               
               if (color.a < 0.1) discard;
       
-              // Apply flashlight effect
               vec2 pos = vUv - u_flashlightPos;
               pos.x *= 1.0 / u_aspectRatio;
               float dist = length(pos);

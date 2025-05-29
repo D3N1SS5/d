@@ -1,3 +1,28 @@
+if (
+  /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  )
+) {
+  document.body.style.margin = "0";
+  document.body.style.background = "black";
+  document.body.innerHTML = `
+    <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: black;
+      color: white;
+      font-family: 'Determination Mono', monospace;
+      font-size: 24px;
+      text-align: center;
+      padding: 20px;
+      text-shadow: 0 0 2px #969696, 2px 0 2px #969696, -2px 0 2px #969696, 0 2px 2px #969696, 0 -2px 2px #969696;
+    ">
+      CONNECTION IS RUPTURING,<br>TRY AGAIN NEXT TIME<br>THROUGH ANOTHER MEDIUM.
+    </div>`;
+  throw new Error("only on pc sorry bud");
+}
 const textBox = document.getElementById("text-box");
 const inputBox = document.getElementById("input-box");
 const answerInput = document.getElementById("answer");

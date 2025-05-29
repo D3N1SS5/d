@@ -62,9 +62,9 @@
       const textCanvas = document.createElement("canvas");
       const ctx = textCanvas.getContext("2d");
 
-      const canvasWidth = 1400; // smaller width for bigger margin left/right
+      const canvasWidth = 1400;
       const lineHeight = 30;
-      const padding = 80; // bigger padding for left/right margin
+      const padding = 80;
 
       function wrapText(context, text, x, y, maxWidth, lineHeight) {
         const words = text.split(" ");
@@ -232,7 +232,6 @@
               vec4 color = texture2D(u_texture, vUv);
               if (color.a < 0.1) discard;
       
-              // Correct for aspect ratio to make flashlight perfectly circular
               vec2 pos = vUv - u_flashlightPos;
               pos.x *= 1.0 / u_aspectRatio;
               float dist = length(pos);
