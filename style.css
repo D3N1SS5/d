@@ -1,0 +1,11 @@
+@font-face {
+  font-family: "ralsei";
+  src: url("ralsei.otf");
+}
+
+body {
+  font-family: "ralsei", sans-serif;
+  background-color: black;
+  color: white;
+  font-family: "ralsei";
+}

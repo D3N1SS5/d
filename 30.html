@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ENTRY.</title>
+    <link rel="icon" href="icon.png" type="image/x-icon" />
+    <style>
+      #particles-js {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        margin: 0;
+        background: black;
+        overflow: hidden;
+        cursor: none;
+      }
+      canvas {
+        display: block;
+      }
+      #cursor-dot {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        background: white;
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
+      #arrow {
+        cursor: pointer;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        font-family: "ralsei", sans-serif;
+        font-size: 48px;
+        color: rgba(255, 253, 247, 0.463);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="particles-js"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="app.js"></script>
+    <div id="cursor-dot"></div>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <div id="arrow"><-</div>
+    <script>
+      const text = `Thirty days in this place. Or at least that’s what Ray reminds me whenever I lose count. Don’t even know how the guy does it, Honestly, I’ve stopped believing in numbers after the first week. Time doesn’t feel like it works naturally here. The air’s always stale, the light’s always the same- bluey, green, and my guitar’s been nothing but a bummer to me ever since I woke up with it strapped to my back. Heck, you can’t even tell if it’s night or day except when you decide to snooze when you get tired.`;
+      const text2 = `I remember the last thing I played before everything went wrong. A familiar chord progression, followed by a melody that my Dad used to hum to me and my Sister. Mom was yelling again, and Dad wasn’t answering his phone, probably because of the arguing and him not being so tech-savvy. So I just... walked out. I walked out to replenish my thoughts, and take a breather. I hope that when I come back home I can have a better nap.`;
+      const text3 = `But after the walk, there was nothing.. I only vividly remember walking on the concrete that the road was built with, And then? I just woke up here. My guitar smelled like old wood and trash. Except now the strings don’t wanna make a sound. Except when I play a specific melody, for some odd reason.`;
+      const text4 = `When I first fell down, Ray found me like that, grabbing the thing like it could save me. They didn’t ask questions. Good, because I don’t have answers. Just this nostalgic feeling of where my memories should be. This current state I'm in, it’s not one I’d personally wish for, but I am happy I’m not alone in this.`;
+      const text5 = `We keep moving. Always moving. The fog appears if you stay up too long, we’ve learned that the hard way when our third hiding spot just... wasn’t there one day. Now we sleep in shifts, I spend the night watching Ray’s back, and so forth. Tomorrow we’re risking travelling deeper into the Waterways. Ray says there might be tools. I personally say there’s definitely something worse waiting down here.`;
+      const text6 = `Sometimes I catch myself humming old songs. The ones Dad taught me when I was small, before everything got complicated. They are the only things that can help me not forget who I’ve once used to be.`;
+      const text7 = `I wonder if they’ve even noticed I’m gone.`;
+
+      const textCanvas = document.createElement("canvas");
+      const ctx = textCanvas.getContext("2d");
+
+      const canvasWidth = 1400;
+      const lineHeight = 30;
+      const padding = 80;
+
+      function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(" ");
+        let line = "";
+        for (let n = 0; n < words.length; n++) {
+          let testLine = line + words[n] + " ";
+          let testWidth = context.measureText(testLine).width;
+          if (testWidth > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = words[n] + " ";
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        context.fillText(line, x, y);
+        return y;
+      }
+
+      async function loadFontAndDrawText() {
+        const font = new FontFace("ralsei", "url(ralsei.otf)");
+        await font.load();
+        document.fonts.add(font);
+
+        textCanvas.width = canvasWidth;
+        textCanvas.height = 1600;
+
+        ctx.clearRect(0, 0, textCanvas.width, textCanvas.height);
+        ctx.fillStyle = "white";
+        ctx.textBaseline = "top";
+        ctx.textAlign = "left";
+
+        ctx.font = "bold 32px ralsei";
+        ctx.fillText("Journal Entry. Day 30", padding, padding);
+
+        ctx.font = "24px ralsei";
+        let y = padding + 50;
+
+        const paragraphs = [text, text2, text3, text4, text5, text6, text7];
+        for (let i = 0; i < paragraphs.length; i++) {
+          y = wrapText(
+            ctx,
+            paragraphs[i],
+            padding,
+            y,
+            canvasWidth - padding * 2,
+            lineHeight
+          );
+          y += lineHeight * 2;
+        }
+
+        const usedHeight = y + padding;
+        const croppedCanvas = document.createElement("canvas");
+        croppedCanvas.width = canvasWidth;
+        croppedCanvas.height = usedHeight;
+        const croppedCtx = croppedCanvas.getContext("2d");
+        croppedCtx.drawImage(
+          textCanvas,
+          0,
+          0,
+          canvasWidth,
+          usedHeight,
+          0,
+          0,
+          canvasWidth,
+          usedHeight
+        );
+
+        return croppedCanvas;
+      }
+
+      async function init() {
+        const arrow = document.getElementById("arrow");
+        arrow.addEventListener("click", () => {
+          window.location.href = "index2.html";
+        });
+        const audio = new Audio("Depths.ogg");
+        audio.loop = true;
+        audio.volume = 0.5;
+        audio.play().catch(() => {
+          window.addEventListener(
+            "click",
+            () => {
+              audio.play();
+            },
+            { once: true }
+          );
+        });
+
+        const finalCanvas = await loadFontAndDrawText();
+
+        const scene = new THREE.Scene();
+
+        let camera = new THREE.OrthographicCamera(
+          0,
+          window.innerWidth,
+          window.innerHeight,
+          0,
+          -1000,
+          1000
+        );
+        camera.position.z = 1;
+
+        const renderer = new THREE.WebGLRenderer({
+          antialias: true,
+          alpha: true,
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        document.body.style.cursor = "none";
+        const dotCursor = document.createElement("div");
+        Object.assign(dotCursor.style, {
+          position: "fixed",
+          width: "8px",
+          height: "8px",
+          borderRadius: "50%",
+          backgroundColor: "white",
+          pointerEvents: "none",
+          zIndex: "9999",
+          top: "0",
+          left: "0",
+          transform: "translate(-50%, -50%)",
+        });
+        document.body.appendChild(dotCursor);
+
+        const texture = new THREE.CanvasTexture(finalCanvas);
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.needsUpdate = true;
+
+        const uniforms = {
+          u_time: { value: 0 },
+          u_texture: { value: texture },
+          u_intensity: { value: 2.0 },
+          u_flashlightPos: { value: new THREE.Vector2(0.5, 0.5) },
+          u_flashlightRadius: { value: 0.3 },
+          u_flashlightFeather: { value: 0.3 },
+          u_flashlightColor: { value: new THREE.Vector3(1.0, 0.95, 0.8) },
+          u_aspectRatio: { value: window.innerWidth / window.innerHeight },
+        };
+
+        const vertexShader = `
+            uniform float u_time;
+            uniform float u_intensity;
+            varying vec2 vUv;
+            void main() {
+              vUv = uv;
+              vec3 pos = position;
+              pos.y += sin(pos.x * 10.0 + u_time * 3.0) * u_intensity;
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+            }
+          `;
+
+        const fragmentShader = `
+            uniform sampler2D u_texture;
+            uniform vec2 u_flashlightPos;
+            uniform float u_flashlightRadius;
+            uniform float u_flashlightFeather;
+            uniform vec3 u_flashlightColor;
+            uniform float u_aspectRatio;
+            varying vec2 vUv;
+      
+            void main() {
+              vec4 color = texture2D(u_texture, vUv);
+              if (color.a < 0.1) discard;
+      
+              vec2 pos = vUv - u_flashlightPos;
+              pos.x *= 1.0 / u_aspectRatio;
+              float dist = length(pos);
+      
+              float light = smoothstep(u_flashlightRadius, u_flashlightRadius - u_flashlightFeather, dist);
+      
+              vec3 finalColor = mix(vec3(0.0), u_flashlightColor, light);
+              gl_FragColor = vec4(color.rgb * finalColor, color.a * light);
+            }
+          `;
+
+        const material = new THREE.ShaderMaterial({
+          uniforms,
+          vertexShader,
+          fragmentShader,
+          transparent: true,
+        });
+
+        const geometry = new THREE.PlaneGeometry(
+          finalCanvas.width,
+          finalCanvas.height
+        );
+        const mesh = new THREE.Mesh(geometry, material);
+
+        mesh.position.set(
+          finalCanvas.width / 2,
+          window.innerHeight - finalCanvas.height / 2,
+          0
+        );
+        scene.add(mesh);
+
+        let scrollY = 0;
+
+        window.addEventListener("wheel", (event) => {
+          scrollY += event.deltaY;
+          const maxScroll = finalCanvas.height - window.innerHeight;
+          scrollY = Math.min(Math.max(scrollY, 0), maxScroll);
+          mesh.position.y =
+            window.innerHeight - finalCanvas.height / 2 + scrollY;
+        });
+
+        window.addEventListener("resize", () => {
+          uniforms.u_aspectRatio.value = finalCanvas.width / finalCanvas.height;
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          camera.right = window.innerWidth;
+          camera.top = window.innerHeight;
+          camera.updateProjectionMatrix();
+
+          mesh.position.set(
+            finalCanvas.width / 2,
+            window.innerHeight - finalCanvas.height / 2 + scrollY,
+            0
+          );
+        });
+
+        window.addEventListener("mousemove", (e) => {
+          dotCursor.style.left = e.clientX + "px";
+          dotCursor.style.top = e.clientY + "px";
+
+          const localX = e.clientX - (mesh.position.x - finalCanvas.width / 2);
+          const localY =
+            window.innerHeight -
+            e.clientY -
+            (mesh.position.y - finalCanvas.height / 2);
+
+          const uvx = localX / finalCanvas.width;
+          const uvy = localY / finalCanvas.height;
+
+          uniforms.u_flashlightPos.value.x = THREE.MathUtils.clamp(uvx, 0, 1);
+          uniforms.u_flashlightPos.value.y = THREE.MathUtils.clamp(uvy, 0, 1);
+        });
+
+        function animate(time) {
+          uniforms.u_time.value = time * 0.001;
+          renderer.render(scene, camera);
+          requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      init();
+    </script>
+  </body>
+</html>
